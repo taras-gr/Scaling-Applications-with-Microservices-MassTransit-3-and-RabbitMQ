@@ -6,6 +6,13 @@ namespace FireOnWheels.Registration.Web.Controllers
 {
     public class HomeController : Controller
     {
+        public RabbitMqManager RabbitMqManager { get; set; }
+
+        public HomeController()
+        {
+            RabbitMqManager = new RabbitMqManager();
+        }
+
         public IActionResult Index()
         {
             return View("RegisterOrder");
@@ -17,6 +24,7 @@ namespace FireOnWheels.Registration.Web.Controllers
             var registerOrderCommand = new RegisterOrderCommand(model);
 
             //Send RegisterOrderCommand
+            RabbitMqManager.SendRegisterOrderCommand(registerOrderCommand);
 
             return View("Thanks");
         }
